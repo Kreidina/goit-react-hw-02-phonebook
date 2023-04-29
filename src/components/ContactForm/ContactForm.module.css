@@ -1,0 +1,12 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  border: 1px solid rgb(5, 44, 5);
+}
+.input {
+  width: 200px;
+}
+.button {
+  width: 100px;
+}
