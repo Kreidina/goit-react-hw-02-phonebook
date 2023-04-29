@@ -32,13 +32,8 @@ class App extends Component {
         <h2>Contacts</h2>
         <ContactList contactName={this.state.contacts} />
       </div>
-    );
-  }
-}
 
-export default App;
-{
-  /* <div>
+      /* <div>
   <h1>Phonebook</h1>
   <ContactForm ... />
 
@@ -46,4 +41,8 @@ export default App;
   <Filter ... />
   <ContactList ... />
 </div> */
+    );
+  }
 }
+
+export default App;
