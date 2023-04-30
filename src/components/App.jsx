@@ -1,46 +1,67 @@
 import React, { Component } from 'react';
-import { ContactForm } from './ContactForm/ContactForm';
+import { nanoid } from 'nanoid';
+import ContactForm from './ContactForm/ContactForm';
 import { ContactList } from './ContactList/ContactList';
+import { Filter } from './Filter/Filter';
 
 class App extends Component {
   state = {
     contacts: [],
-    name: '',
-    number: '',
     filter: '',
   };
-  // handleChange = evt => {
-  //   const { name, value } = evt.target;
-  //   this.setState({ contacts: [name, value] });
-  // };
-  submitContact = e => {
-    e.preventDefault();
-    const { name, number } = e.target;
-    console.log(name.value, number.value);
-    // this.setState({prestate contacts: [name.value, number.value] });
-    const { contacts } = this.state;
-    console.log(contacts);
+
+  addContact = data => {
+    const idData = nanoid();
+    const { name, number } = data;
+
+    const isContactExsist = this.state.contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+    if (isContactExsist) {
+      return alert(`${name} to already in contacts`);
+    }
+    const newContact = {
+      id: idData,
+      name,
+      number,
+    };
+
+    this.setState(prevState => ({
+      contacts: [newContact, ...prevState.contacts],
+    }));
   };
+
+  fiterChange = evt => {
+    this.setState({
+      filter: evt.currentTarget.value,
+    });
+  };
+
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
+    }));
+  };
+
   render() {
+    const { contacts, filter } = this.state;
+
+    const normalizeFilter = filter.toLowerCase();
+    const visibleContact = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizeFilter)
+    );
+
     return (
-      <div>
+      <div className="generalContainet">
         <h1>Phonebook</h1>
-        <ContactForm
-          addContact={this.submitContact}
-          contactsValue={this.handleChange}
-        />
+        <ContactForm onSubmit={this.addContact} />
         <h2>Contacts</h2>
-        <ContactList contactName={this.state.contacts} />
+        <Filter value={filter} onChange={this.fiterChange} />
+        <ContactList
+          contactNames={visibleContact}
+          deleteItem={this.deleteContact}
+        />
       </div>
-
-      /* <div>
-  <h1>Phonebook</h1>
-  <ContactForm ... />
-
-  <h2>Contacts</h2>
-  <Filter ... />
-  <ContactList ... />
-</div> */
     );
   }
 }
