@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 import css from './ContactList.module.css';
-import { ContactItem } from 'components/ContactItem/ContactItem';
+import ContactItem from 'components/ContactItem';
 
 export const ContactList = ({ contactNames, deleteItem }) => {
   return (
@@ -16,4 +17,16 @@ export const ContactList = ({ contactNames, deleteItem }) => {
       })}
     </ul>
   );
+};
+
+ContactList.propTypes = {
+  contactNames: PropTypes.oneOfType([
+    PropTypes.arrayOf({
+      id: PropTypes.string,
+      name: PropTypes.string,
+      number: PropTypes.string,
+    }),
+    PropTypes.array,
+  ]).isRequired,
+  deleteItem: PropTypes.func.isRequired,
 };
